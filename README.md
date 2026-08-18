@@ -53,3 +53,7 @@ Lnett defines day tariff as Monday-Friday 06:00-22:00. Night/weekend tariff appl
 ## v0.1.3
 
 Adds `Total`: current energy tariff + consumption tax + Enova fee, with Day total and Night total attributes.
+
+## v0.1.4
+
+All numeric tariff sensors now use Home Assistant `state_class: measurement`. The `Day tariff` binary sensor intentionally has no state class.
