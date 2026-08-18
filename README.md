@@ -61,3 +61,7 @@ All numeric tariff sensors now use Home Assistant `state_class: measurement`. Th
 ## v0.1.5
 
 Fix: actually register the `Total` sensor during sensor platform setup.
+
+## v0.1.6
+
+Fix the parser test module loading and remove a duplicate Home Assistant sensor import.

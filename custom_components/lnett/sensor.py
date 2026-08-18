@@ -5,7 +5,11 @@ from dataclasses import dataclass
 from datetime import timedelta
 from typing import Callable
 
-from homeassistant.components.sensor import SensorEntity, SensorEntityDescription, SensorStateClass, SensorStateClass
+from homeassistant.components.sensor import (
+    SensorEntity,
+    SensorEntityDescription,
+    SensorStateClass,
+)
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import DeviceInfo

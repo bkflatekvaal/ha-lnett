@@ -1,9 +1,11 @@
 from pathlib import Path
 import importlib.util
+import sys
 
 MODULE = Path(__file__).parents[1] / "custom_components" / "lnett" / "parser.py"
 spec = importlib.util.spec_from_file_location("lnett_parser", MODULE)
 parser = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = parser
 spec.loader.exec_module(parser)
 
 
