@@ -1,0 +1,47 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Lnett Tariff",
+        "description": "Fetch current grid tariff prices from Lnett's public price page."
+      }
+    },
+    "abort": {
+      "single_instance_allowed": "Only one Lnett Tariff instance can be configured."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "energy_day": {
+        "name": "Energy tariff day"
+      },
+      "energy_night_weekend": {
+        "name": "Energy tariff night/weekend"
+      },
+      "consumption_tax": {
+        "name": "Electricity consumption tax"
+      },
+      "enova_fee": {
+        "name": "Enova fee"
+      },
+      "capacity_0_2": {
+        "name": "Capacity tariff 0–2 kW"
+      },
+      "capacity_2_5": {
+        "name": "Capacity tariff 2–5 kW"
+      },
+      "capacity_5_10": {
+        "name": "Capacity tariff 5–10 kW"
+      },
+      "capacity_10_15": {
+        "name": "Capacity tariff 10–15 kW"
+      },
+      "capacity_15_20": {
+        "name": "Capacity tariff 15–20 kW"
+      },
+      "capacity_20_25": {
+        "name": "Capacity tariff 20–25 kW"
+      }
+    }
+  }
+}

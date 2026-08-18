@@ -1,0 +1,41 @@
+# Lnett Tariff for Home Assistant
+
+Custom integration that reads Lnett's public private-customer tariff page and exposes the current published tariff values as Home Assistant sensors.
+
+## v0.1.0
+
+Sensors:
+- Energy tariff, day
+- Energy tariff, night/weekend
+- Electricity consumption tax
+- Enova fee
+- Capacity tariffs 0–2, 2–5, 5–10, 10–15, 15–20 and 20–25 kW
+
+The integration refreshes the Lnett page once every 24 hours.
+
+## Defensive parsing
+
+The parser searches for semantic labels such as `Energiledd, dag` and `Kapasitetsledd 5 - 10 kW`, rather than relying on CSS classes or table row positions.
+
+A new dataset is accepted only if:
+- the tariff validity date is found;
+- all expected tariff values are found;
+- all values pass sanity checks.
+
+If an update cannot be parsed, Home Assistant's DataUpdateCoordinator marks the update as failed and retains the last successful data.
+
+## Installation for development
+
+Copy `custom_components/lnett` to your Home Assistant `custom_components` directory and restart Home Assistant.
+
+Then:
+**Settings → Devices & services → Add integration → Lnett Tariff**
+
+For HACS development, put this project in a GitHub repository and add it to HACS as a custom repository of type Integration.
+
+## Notes
+
+v0.1.0 intentionally does **not** calculate your current capacity tier from consumption data. It only provides the tariff values published by Lnett.
+
+The source page is:
+https://www.l-nett.no/nettleie/priser-og-vilkar-privat/
