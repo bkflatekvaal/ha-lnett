@@ -41,6 +41,17 @@
       },
       "capacity_20_25": {
         "name": "Capacity tariff 20–25 kW"
+      },
+      "energy_price": {
+        "name": "Energy tariff"
+      },
+      "total": {
+        "name": "Total"
+      }
+    },
+    "binary_sensor": {
+      "day_tariff": {
+        "name": "Day tariff"
       }
     }
   }

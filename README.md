@@ -5,6 +5,8 @@ Custom integration that reads Lnett's public private-customer tariff page and ex
 ## v0.1.0
 
 Sensors:
+- Current energy tariff (automatically switches between day and night/weekend)
+- Binary sensor `Dagtariff` (ON during day tariff, OFF otherwise)
 - Energy tariff, day
 - Energy tariff, night/weekend
 - Electricity consumption tax
@@ -39,3 +41,15 @@ v0.1.0 intentionally does **not** calculate your current capacity tier from cons
 
 The source page is:
 https://www.l-nett.no/nettleie/priser-og-vilkar-privat/
+
+## Tariff period
+
+Lnett defines day tariff as Monday-Friday 06:00-22:00. Night/weekend tariff applies Monday-Friday 22:00-06:00, Saturdays, Sundays and Norwegian public holidays. The `Dagtariff` binary sensor follows these rules and can be used directly as an automation trigger.
+
+## v0.1.2
+
+`Energy tariff` now exposes `Day` and `Night` price attributes, uses measurement state class, and the dynamic entities use consistent English names: `Energy tariff` and `Day tariff`.
+
+## v0.1.3
+
+Adds `Total`: current energy tariff + consumption tax + Enova fee, with Day total and Night total attributes.
