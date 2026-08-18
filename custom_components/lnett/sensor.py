@@ -82,6 +82,7 @@ async def async_setup_entry(
         LnettTariffSensor(coordinator, entry, description) for description in SENSORS
     ]
     entities.append(LnettCurrentEnergyPriceSensor(coordinator, entry))
+    entities.append(LnettTotalSensor(coordinator, entry))
     async_add_entities(entities)
 
 

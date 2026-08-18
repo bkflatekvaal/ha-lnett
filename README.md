@@ -57,3 +57,7 @@ Adds `Total`: current energy tariff + consumption tax + Enova fee, with Day tota
 ## v0.1.4
 
 All numeric tariff sensors now use Home Assistant `state_class: measurement`. The `Day tariff` binary sensor intentionally has no state class.
+
+## v0.1.5
+
+Fix: actually register the `Total` sensor during sensor platform setup.
