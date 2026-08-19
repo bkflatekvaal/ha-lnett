@@ -64,5 +64,8 @@ Fix: actually register the `Total` sensor during sensor platform setup.
 
 ## v0.1.6
 
-Fix the parser test module loading, remove a duplicate Home Assistant sensor import,
-and add local Home Assistant brand images.
+Fix the parser test module loading and remove a duplicate Home Assistant sensor import.
+
+## v0.1.7
+
+Add local Home Assistant brand images with light and dark theme variants.
