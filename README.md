@@ -11,7 +11,7 @@ Sensors:
 - Energy tariff, night/weekend
 - Electricity consumption tax
 - Enova fee
-- Capacity tariffs 0–2, 2–5, 5–10, 10–15, 15–20 and 20–25 kW
+- Capacity tariffs dynamically discovered from Lnett's published price table
 
 The integration refreshes the Lnett page once every 24 hours.
 
@@ -69,3 +69,8 @@ Fix the parser test module loading and remove a duplicate Home Assistant sensor 
 ## v0.1.7
 
 Add local Home Assistant brand images with light and dark theme variants.
+
+## v0.1.8
+
+Discover capacity tariff tiers dynamically so added, adjusted, or split tiers are
+reflected automatically after a tariff refresh.

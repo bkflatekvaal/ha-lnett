@@ -62,17 +62,6 @@ SENSORS = (
         icon="mdi:leaf",
         value_fn=lambda d: d.enova_fee,
     ),
-    *tuple(
-        LnettSensorDescription(
-            key=f"capacity_{low}_{high}",
-            translation_key=f"capacity_{low}_{high}",
-            native_unit_of_measurement="NOK/mnd",
-            state_class=SensorStateClass.MEASUREMENT,
-            icon="mdi:transmission-tower",
-            value_fn=lambda d, key=f"{low}-{high}": d.capacity[key],
-        )
-        for low, high in ((0, 2), (2, 5), (5, 10), (10, 15), (15, 20), (20, 25))
-    ),
 )
 
 
@@ -88,6 +77,27 @@ async def async_setup_entry(
     entities.append(LnettCurrentEnergyPriceSensor(coordinator, entry))
     entities.append(LnettTotalSensor(coordinator, entry))
     async_add_entities(entities)
+
+    known_capacity_tiers: set[str] = set()
+
+    @callback
+    def async_add_capacity_sensors() -> None:
+        new_tiers = set(coordinator.data.capacity) - known_capacity_tiers
+        if not new_tiers:
+            return
+        known_capacity_tiers.update(new_tiers)
+        async_add_entities(
+            LnettCapacitySensor(coordinator, entry, tier)
+            for tier in sorted(new_tiers, key=_capacity_sort_key)
+        )
+
+    async_add_capacity_sensors()
+    entry.async_on_unload(coordinator.async_add_listener(async_add_capacity_sensors))
+
+
+def _capacity_sort_key(tier: str) -> tuple[float, float]:
+    low, high = tier.split("-", maxsplit=1)
+    return float(low), float(high)
 
 
 class _LnettBaseSensor(CoordinatorEntity[LnettDataUpdateCoordinator], SensorEntity):
@@ -123,6 +133,30 @@ class LnettTariffSensor(_LnettBaseSensor):
     @property
     def native_value(self):
         return self.entity_description.value_fn(self.coordinator.data)
+
+
+class LnettCapacitySensor(_LnettBaseSensor):
+    """A dynamically discovered capacity tariff."""
+
+    _attr_translation_key = "capacity"
+    _attr_native_unit_of_measurement = "NOK/mnd"
+    _attr_state_class = SensorStateClass.MEASUREMENT
+    _attr_icon = "mdi:transmission-tower"
+
+    def __init__(self, coordinator, entry, tier: str):
+        super().__init__(coordinator, entry)
+        self._tier = tier
+        tier_id = tier.replace(".", "_").replace("-", "_")
+        self._attr_unique_id = f"{entry.entry_id}_capacity_{tier_id}"
+        self._attr_translation_placeholders = {"tier": tier}
+
+    @property
+    def available(self) -> bool:
+        return super().available and self._tier in self.coordinator.data.capacity
+
+    @property
+    def native_value(self):
+        return self.coordinator.data.capacity.get(self._tier)
 
 
 class LnettCurrentEnergyPriceSensor(_LnettBaseSensor):

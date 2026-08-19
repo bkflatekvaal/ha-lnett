@@ -24,23 +24,8 @@
       "enova_fee": {
         "name": "Enovaavgift"
       },
-      "capacity_0_2": {
-        "name": "Kapasitetsledd 0–2 kW"
-      },
-      "capacity_2_5": {
-        "name": "Kapasitetsledd 2–5 kW"
-      },
-      "capacity_5_10": {
-        "name": "Kapasitetsledd 5–10 kW"
-      },
-      "capacity_10_15": {
-        "name": "Kapasitetsledd 10–15 kW"
-      },
-      "capacity_15_20": {
-        "name": "Kapasitetsledd 15–20 kW"
-      },
-      "capacity_20_25": {
-        "name": "Kapasitetsledd 20–25 kW"
+      "capacity": {
+        "name": "Kapasitetsledd {tier} kW"
       },
       "energy_price": {
         "name": "Energy tariff"

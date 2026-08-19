@@ -24,23 +24,8 @@
       "enova_fee": {
         "name": "Enova fee"
       },
-      "capacity_0_2": {
-        "name": "Capacity tariff 0–2 kW"
-      },
-      "capacity_2_5": {
-        "name": "Capacity tariff 2–5 kW"
-      },
-      "capacity_5_10": {
-        "name": "Capacity tariff 5–10 kW"
-      },
-      "capacity_10_15": {
-        "name": "Capacity tariff 10–15 kW"
-      },
-      "capacity_15_20": {
-        "name": "Capacity tariff 15–20 kW"
-      },
-      "capacity_20_25": {
-        "name": "Capacity tariff 20–25 kW"
+      "capacity": {
+        "name": "Capacity tariff {tier} kW"
       },
       "energy_price": {
         "name": "Energy tariff"

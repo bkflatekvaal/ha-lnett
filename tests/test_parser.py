@@ -20,3 +20,20 @@ def test_parse_2026_fixture():
     assert data.capacity["0-2"] == 150
     assert data.capacity["5-10"] == 400
     assert data.capacity["20-25"] == 1150
+
+
+def test_parse_dynamic_capacity_tiers():
+    html = (Path(__file__).parent / "fixtures" / "lnett_2026.html").read_text(encoding="utf-8")
+    html = html.replace(
+        "Kapasitetsledd 2 - 5 kW</td><td>250 kr/mnd",
+        "Kapasitetsledd 2,5 - 6 kW</td><td>275 kr/mnd",
+    ).replace(
+        "</table>",
+        "<tr><td>Kapasitetsledd 25 – 50 kW</td><td>1600 kr/mnd</td><td>1280 kr/mnd</td></tr></table>",
+    )
+
+    data = parser.parse_tariffs(html)
+
+    assert "2-5" not in data.capacity
+    assert data.capacity["2.5-6"] == 275
+    assert data.capacity["25-50"] == 1600

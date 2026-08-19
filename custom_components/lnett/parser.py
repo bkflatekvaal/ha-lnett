@@ -43,6 +43,28 @@ def _find_number(text: str, label_pattern: str, unit_pattern: str) -> float:
     return _number(match.group(1))
 
 
+def _find_capacity_tariffs(text: str) -> dict[str, float]:
+    """Return every capacity tariff published in the price table."""
+    pattern = re.compile(
+        r"Kapasitetsledd\s*"
+        r"([0-9]+(?:[.,][0-9]+)?)\s*[-‐‑‒–—]\s*"
+        r"([0-9]+(?:[.,][0-9]+)?)\s*kW\s+"
+        r"([0-9][0-9\s.,]*)\s*kr\s*/?\s*mnd",
+        flags=re.IGNORECASE,
+    )
+    capacity: dict[str, float] = {}
+    for match in pattern.finditer(text):
+        low = _number(match.group(1))
+        high = _number(match.group(2))
+        if low >= high:
+            raise ValueError(f"Invalid capacity tariff range: {low:g}-{high:g}")
+        capacity.setdefault(f"{low:g}-{high:g}", _number(match.group(3)))
+
+    if not capacity:
+        raise ValueError("Could not find any capacity tariffs")
+    return capacity
+
+
 def parse_tariffs(html: str) -> TariffData:
     extractor = _TextExtractor()
     extractor.feed(html)
@@ -57,18 +79,9 @@ def parse_tariffs(html: str) -> TariffData:
         int(date_match.group(3)), int(date_match.group(2)), int(date_match.group(1))
     )
 
-    capacity = {}
-    for low, high in ((0, 2), (2, 5), (5, 10), (10, 15), (15, 20), (20, 25)):
-        key = f"{low}-{high}"
-        capacity[key] = _find_number(
-            text,
-            rf"Kapasitetsledd\s*{low}\s*-\s*{high}\s*kW",
-            r"kr\s*/?\s*mnd",
-        )
-
     data = TariffData(
         valid_from=valid_from,
-        capacity=capacity,
+        capacity=_find_capacity_tariffs(text),
         energy_day=_find_number(text, r"Energiledd,\s*dag", r"øre\s*/?\s*kWh"),
         energy_night_weekend=_find_number(
             text, r"Energiledd,\s*natt\s*/\s*helg", r"øre\s*/?\s*kWh"
@@ -83,8 +96,6 @@ def parse_tariffs(html: str) -> TariffData:
 
 
 def _validate(data: TariffData) -> None:
-    if set(data.capacity) != {"0-2", "2-5", "5-10", "10-15", "15-20", "20-25"}:
-        raise ValueError("Incomplete capacity tariff table")
     if not (0 < data.energy_day < 300):
         raise ValueError("Energy day price outside expected range")
     if not (0 < data.energy_night_weekend < 300):
